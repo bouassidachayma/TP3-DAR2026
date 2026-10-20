@@ -95,13 +95,13 @@ Le serveur est prêt à recevoir les objets `Operation`.
 
 ### 2. Calculs simultanés des 3 clients
 - Le Client 1 effectue `10 + 5`.
-  ![Client 1 Calcul](screenshots/client1_calc.png)
+![Client 1 Calcul](screenshots/client1_calc.png)
 
 - Le Client 2 effectue `20 * 2`.
-  ![Client 2 Calcul](screenshots/client2_calc.png)
+![Client 2 Calcul](screenshots/client2_calc.png)
 
 - Le Client 3 effectue `100 / 4`.
-  ![Client 3 Calcul](screenshots/client3_calc.png)
+![Client 3 Calcul](screenshots/client3_calc.png)
 
 ### 3. Preuve de l'accès concurrent (Compteur)
 La console du serveur montre que les 3 opérations ont été traitées et que le compteur global s'est incrémenté de 1 à 3 de manière séquentielle et sécurisée.
