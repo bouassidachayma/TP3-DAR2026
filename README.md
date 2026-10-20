@@ -4,42 +4,58 @@
 **Matière :** Développement d'applications réparties  
 **Année universitaire :** 2026 – 2027
 
-Ce dépôt contient le travail du TP3 portant sur la création d'un serveur multi-thread capable de gérer plusieurs clients simultanément, avec une communication par texte (Activité 3-1) et par objets avec gestion d'accès concurrent (Activité 3-2).
+Ce dépôt contient le travail complet du TP3 : un serveur multi-thread capable de gérer plusieurs clients simultanément, avec une communication texte (Activité 3-1) puis par objets avec un compteur synchronisé (Activité 3-2).
 
 ---
 
 # Activité 3-1 : Acceptation de plusieurs clients
 
 ## Objectif
-Modifier le serveur pour qu'il puisse accepter plusieurs clients simultanément. Pour chaque client, le serveur affiche son adresse IP, son numéro d'ordre de connexion, et lui envoie ce même numéro.
-
-## Architecture de l'application
-- **`ServerMT_3_1.java`** : La classe principale du serveur. Elle utilise une boucle `while(true)` pour accepter les connexions en continu via `ServerSocket.accept()`.
-- **`ClientProcess_3_1.java`** : Une classe qui hérite de `Thread`. Elle est instanciée pour chaque nouveau client afin de gérer la communication de manière indépendante.
-- **`ClientMT_3_1.java`** : Le client qui se connecte au serveur, reçoit son numéro d'ordre, et peut envoyer des messages.
+Créer un serveur multi-thread acceptant plusieurs clients simultanément, affichant l'adresse IP et le numéro d'ordre de chaque client.
 
 ## Code Source
 ### ServerMT_3_1.java
-![Code Server 3-1](screenshots/tp3_server_3_1_code.png)
+![Code Server](screenshots/code_server_3_1.png)
 
-### ClientProcess_3_1.java
-![Code ClientProcess 3-1](screenshots/tp3_clientprocess_3_1_code.png)
+### ClientProcess_3_1.java (Le Thread)
+![Code Process](screenshots/code_process_3_1.png)
 
 ### ClientMT_3_1.java
-![Code Client 3-1](screenshots/tp3_client_3_1_code.png)
+![Code Client](screenshots/code_client_3_1.png)
 
-## Tests et Résultats
-### 1. Test avec plusieurs clients Java
-Le serveur accepte les clients et affiche leurs adresses IP et numéros d'ordre.
-![Serveur 2 clients](screenshots/tp3_server_2_clients.png)
+## Déroulement des tests
 
-Les clients reçoivent leur numéro et peuvent échanger des messages.
-![Clients 3-1](screenshots/tp3_clients_messages.png)
+### 1. Démarrage du serveur
+Le serveur démarre et bloque sur `accept()` en attente de clients.
+![Serveur attente](screenshots/server_waiting.png)
 
-### 2. Test avec Telnet
-Un client Telnet a pu se connecter au serveur, qui lui a attribué le numéro 3.
-![Telnet](screenshots/tp3_telnet.png)
-![Serveur Telnet](screenshots/tp3_server_telnet.png)
+### 2. Connexion du Client 1
+Le premier client se connecte et reçoit son numéro.
+![Client 1](screenshots/client1_connected.png)
+Le serveur détecte la connexion (IP + n°1).
+![Serveur Client 1](screenshots/server_client1.png)
+
+### 3. Connexion du Client 2
+Le second client se connecte simultanément et reçoit son numéro.
+![Client 2](screenshots/client2_connected.png)
+Le serveur montre les deux clients connectés en parallèle.
+![Serveur Client 1 et 2](screenshots/server_client1_2.png)
+
+### 4. Échange de messages
+Le Client 1 envoie un message au serveur.
+![Client 1 message](screenshots/client1_message.png)
+Le Client 2 envoie un message au serveur.
+![Client 2 message](screenshots/client2_message.png)
+Le serveur reçoit et affiche les messages des deux clients sans se bloquer.
+![Serveur messages](screenshots/server_messages.png)
+
+### 5. Test avec Telnet (Client 3)
+Pour prouver que le serveur accepte n'importe quel client, on utilise Telnet.
+![Commande Telnet](screenshots/telnet_cmd.png)
+Le serveur envoie le message de bienvenue à Telnet.
+![Telnet Bienvenue](screenshots/telnet_bienvenue.png)
+Le serveur affiche la 3ème connexion (Client n°3).
+![Serveur Telnet](screenshots/server_telnet.png)
 
 ## Synthèse (3-1)
-Le serveur utilise une boucle infinie pour ne jamais s'arrêter d'écouter. À chaque connexion, le serveur crée un nouveau Thread (`ClientProcess_3_1`). Cela permet au thread principal de rester bloqué sur `accept()` pour les futurs clients, tandis que les threads enfants gèrent la lecture et l'écriture des messages avec leurs clients respectifs. L'utilisation de `PrintWriter` et `BufferedReader` permet un échange de texte fluide.
+Le serveur utilise une boucle `while(true)` couplée à `ServerSocket.accept()`. À chaque nouvelle connexion, un nouveau Thread (`ClientProcess_3_1` héritant de `Thread`) est instancié. Le thread principal reste donc disponible pour accepter d'autres clients. L'échange de texte se fait via `PrintWriter` et `BufferedReader`.
