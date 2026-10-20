@@ -65,3 +65,47 @@ Le serveur affiche la 3ème connexion (Client n°3).
 
 ## Synthèse (3-1)
 Le serveur utilise une boucle `while(true)` couplée à `ServerSocket.accept()`. À chaque nouvelle connexion, un nouveau Thread (`ClientProcess_3_1` héritant de `Thread`) est instancié. Le thread principal reste donc disponible pour accepter d'autres clients. L'échange de texte se fait via `PrintWriter` et `BufferedReader`.
+
+---
+
+# Activité 3-2 : Calculatrice Multi-thread et Accès Concurrent
+
+## Objectif
+Intégrer la calculatrice (communication par objets `Serializable`) dans le serveur multi-thread. Ajouter un compteur global synchronisé pour compter le nombre total d'opérations traitées.
+
+## Code Source
+### Operation.java (Objet partagé)
+![Code Operation](screenshots/code_operation.png)
+
+### ServerMT_3_2.java
+![Code Server 3-2](screenshots/code_server_3_2.png)
+
+### ClientHandler_3_2.java (Section critique)
+L'incrémentation du compteur est protégée par un bloc `synchronized` pour éviter les conflits.
+![Code Handler 3-2](screenshots/code_handler_3_2.png)
+
+### ClientMT_3_2.java
+![Code Client 3-2](screenshots/code_client_3_2.png)
+
+## Déroulement des tests
+
+### 1. Démarrage du serveur
+Le serveur est prêt à recevoir les objets `Operation`.
+![Serveur 3-2 attente](screenshots/server_3_2_waiting.png)
+
+### 2. Calculs simultanés des 3 clients
+- Le Client 1 effectue `10 + 5`.
+  ![Client 1 Calcul](screenshots/client1_calc.png)
+
+- Le Client 2 effectue `20 * 2`.
+  ![Client 2 Calcul](screenshots/client2_calc.png)
+
+- Le Client 3 effectue `100 / 4`.
+  ![Client 3 Calcul](screenshots/client3_calc.png)
+
+### 3. Preuve de l'accès concurrent (Compteur)
+La console du serveur montre que les 3 opérations ont été traitées et que le compteur global s'est incrémenté de 1 à 3 de manière séquentielle et sécurisée.
+![Serveur Compteur](screenshots/server_counter.png)
+
+## Synthèse (3-2)
+Le serveur gère chaque client via le thread `ClientHandler_3_2`. Le compteur global est une ressource critique partagée. Sans le bloc `synchronized`, deux threads pourraient lire la même valeur en même temps (race condition) et fausser le comptage. Grâce à la synchronisation, le compteur s'incrémente de manière fiable (1, puis 2, puis 3). Les objets sont échangés grâce à `ObjectInputStream` et `ObjectOutputStream`.
