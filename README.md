@@ -31,27 +31,25 @@ Le serveur démarre et bloque sur `accept()` en attente de clients.
 
 ### 2. Connexion du Client 1
 Le premier client se connecte et reçoit son numéro.
-
 ![Client 1](screenshots/client1_connected.png)
 
 Le serveur détecte la connexion (IP + n°1).
-
 ![Serveur Client 1](screenshots/server_client1.png)
 
 ### 3. Connexion du Client 2
 Le second client se connecte simultanément et reçoit son numéro.
-
 ![Client 2](screenshots/client2_connected.png)
 
 Le serveur montre les deux clients connectés en parallèle.
-
 ![Serveur Client 1 et 2](screenshots/server_client1_2.png)
 
 ### 4. Échange de messages
 Le Client 1 envoie un message au serveur.
 ![Client 1 message](screenshots/client1_message.png)
+
 Le Client 2 envoie un message au serveur.
 ![Client 2 message](screenshots/client2_message.png)
+
 Le serveur reçoit et affiche les messages des deux clients sans se bloquer.
 ![Serveur messages](screenshots/server_messages.png)
 
