@@ -31,9 +31,11 @@ Le serveur démarre et bloque sur `accept()` en attente de clients.
 
 ### 2. Connexion du Client 1
 Le premier client se connecte et reçoit son numéro.
+
 ![Client 1](screenshots/client1_connected.png)
 
 Le serveur détecte la connexion (IP + n°1).
+
 ![Serveur Client 1](screenshots/server_client1.png)
 
 ### 3. Connexion du Client 2
